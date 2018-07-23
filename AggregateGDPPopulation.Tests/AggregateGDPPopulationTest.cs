@@ -16,7 +16,6 @@ namespace AggregateGDPPopulation.Tests
             string actualOutput = streamReader1.ReadToEnd();
             string expectedOutput = streamReader2.ReadToEnd();
             Assert.Equal(expectedOutput, actualOutput);
-
         }
     }
 }
