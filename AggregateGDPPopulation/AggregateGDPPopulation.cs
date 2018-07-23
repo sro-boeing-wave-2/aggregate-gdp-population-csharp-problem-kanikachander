@@ -51,7 +51,6 @@ namespace AggregateGDPPopulation
                     {
                         GDPPopulation gDPPopulation = new GDPPopulation()
                         {
-
                             //GDP_2012 = result[continent].GDP_2012,
                             //Population_2012 = result[continent].Population_2012
                             GDP_2012 = float.Parse(rows[indexofGDP2012]),
