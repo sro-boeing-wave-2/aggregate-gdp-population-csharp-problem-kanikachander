@@ -4,28 +4,39 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 
 namespace AggregateGDPPopulation
 {
     public class Class1
     {
-        public static string Aggregate() {
-            string datafile = "";
-            string mapfile = "";
-            using (StreamReader streamReader = new StreamReader(@"../../../../AggregateGDPPopulation/data/datafile.csv"))
+        public static async Task<string> ReadFileAsync(string filepath)
+        {
+            string data = "";
+            using (StreamReader streamReader = new StreamReader(filepath))
             {
-                while (!streamReader.EndOfStream)
-                {
-                    datafile = streamReader.ReadToEnd();
-                }
+                data = await streamReader.ReadToEndAsync();
             }
-            using (StreamReader streamReader = new StreamReader(@"../../../../AggregateGDPPopulation/data/country-continent-mapper.json"))
+            return data;
+        }
+
+        public static async void WriteFileAsync(string filepath, string data)
+        {
+            using (StreamWriter streamwriter = new StreamWriter(filepath))
             {
-                while (!streamReader.EndOfStream)
-                {
-                    mapfile = streamReader.ReadToEnd();
-                }
+                await streamwriter.WriteLineAsync(data);
             }
+        }
+ 
+        public static async Task Aggregate() {
+            string datafilePath = "../../../../AggregateGDPPopulation/data/datafile.csv";
+            string mapfilePath = "../../../../AggregateGDPPopulation/data/datafile.csv";
+            string outputPath = "../../../../AggregateGDPPopulation/output/output.json";
+            Task<string> datatask = ReadFileAsync(datafilePath);
+            Task<string> mapfiletask = ReadFileAsync(mapfilePath);
+            string datafile = await datatask;
+            string mapfile = await mapfiletask;
+
             Regex reg = new Regex("[*'\"_&#^@]");
             datafile = reg.Replace(datafile, string.Empty);
             var mapfileDict = JsonConvert.DeserializeObject<Dictionary<string, string>>(mapfile);
@@ -51,8 +62,6 @@ namespace AggregateGDPPopulation
                     {
                         GDPPopulation gDPPopulation = new GDPPopulation()
                         {
-                            //GDP_2012 = result[continent].GDP_2012,
-                            //Population_2012 = result[continent].Population_2012
                             GDP_2012 = float.Parse(rows[indexofGDP2012]),
                             POPULATION_2012 = float.Parse(rows[indexofPopulation2012])
                         };
@@ -62,8 +71,7 @@ namespace AggregateGDPPopulation
                 catch(Exception e) { }
             }
             string json = JsonConvert.SerializeObject(result, Formatting.Indented);
-            File.WriteAllText(@"../../../../AggregateGDPPopulation/output/output.json", json);
-            return json;
+            WriteFileAsync(outputPath, json);
         }
     }
     public class GDPPopulation
