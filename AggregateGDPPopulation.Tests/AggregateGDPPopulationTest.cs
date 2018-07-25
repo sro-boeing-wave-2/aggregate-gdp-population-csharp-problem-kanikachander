@@ -6,19 +6,13 @@ using System.Threading.Tasks;
 
 namespace AggregateGDPPopulation.Tests
 {
-    public class UnitTest1
+    public class AggregateGDPPopulationTest
     {
         [Fact]
-        public async void Test1()
+        public async void VerifyExpectedAndActualOutput()
         {
-            //StreamReader streamReader1 = new StreamReader(@"../../../../AggregateGDPPopulation.Tests/expected-output.json");
-            //StreamReader streamReader2 = new StreamReader(@"../../../../AggregateGDPPopulation/output/output.json");
-            //string actualOutput = streamReader1.ReadToEnd();
-            //string expectedOutput = streamReader2.ReadToEnd();
-            //Assert.Equal(expectedOutput, actualOutput);
-
-            Task<string> expectedOutputTask = Class1.ReadFileAsync(@"../../../../AggregateGDPPopulation.Tests/expected-output.json");
-            Task<string> actualOutputTask = Class1.ReadFileAsync(@"../../../../AggregateGDPPopulation/output/output.json");
+            Task<string> expectedOutputTask = AggregateGDPPopulation.ReadFileAsync(@"../../../../AggregateGDPPopulation.Tests/expected-output.json");
+            Task<string> actualOutputTask = AggregateGDPPopulation.ReadFileAsync(@"../../../../AggregateGDPPopulation/output/output.json");
             string expectedOutput = await expectedOutputTask;
             string actualOutput = await expectedOutputTask;
             Assert.Equal(expectedOutput, actualOutput);

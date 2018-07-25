@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace AggregateGDPPopulation
 {
-    public class Class1
+    public class AggregateGDPPopulation
     {
         public static async Task<string> ReadFileAsync(string filepath)
         {
@@ -30,7 +30,7 @@ namespace AggregateGDPPopulation
  
         public static async Task Aggregate() {
             string datafilePath = "../../../../AggregateGDPPopulation/data/datafile.csv";
-            string mapfilePath = "../../../../AggregateGDPPopulation/data/datafile.csv";
+            string mapfilePath = "../../../../AggregateGDPPopulation/data/country-continent-mapper.json";
             string outputPath = "../../../../AggregateGDPPopulation/output/output.json";
             Task<string> datatask = ReadFileAsync(datafilePath);
             Task<string> mapfiletask = ReadFileAsync(mapfilePath);
@@ -68,6 +68,7 @@ namespace AggregateGDPPopulation
                         result.Add(continent, gDPPopulation);
                     }
                 }
+
                 catch(Exception e) { }
             }
             string json = JsonConvert.SerializeObject(result, Formatting.Indented);
